@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,10 +57,17 @@ namespace FireBaseDynamicLinksService.Services.Business
                     jsonRequest,
                     Encoding.UTF8,
                     "application/json");
+            try
+            {
+                var shortDynamicLinkResponse = await request.ExecuteAsync();
 
-            var shortDynamicLinkResponse = await request.ExecuteAsync();
-
-            return shortDynamicLinkResponse.ShortLink;
+                return shortDynamicLinkResponse.ShortLink;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return null;
+            }
         }
     }
 }

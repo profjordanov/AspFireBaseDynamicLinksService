@@ -46,40 +46,7 @@ namespace FireBaseDynamicLinksService.Configuration
 
         internal static IServiceCollection AddDomainServices(this IServiceCollection services)
         {
-            var repositoryTypes = Assembly
-                .GetAssembly(typeof(IDynamicLinksService))
-                .GetTypes()
-                .Where(t => t.Name.EndsWith("Repository") &&
-                            t.IsInterface)
-                .ToArray();
-
-            var repositoryImplementationTypes = Assembly
-                .GetAssembly(typeof(DynamicLinksService))
-                .GetTypes()
-                .Where(t => t.Name.EndsWith("Repository") &&
-                            t.IsClass)
-                .ToDictionary(t => t.Name, t => t);
-
-            foreach (var repositoryType in repositoryTypes)
-            {
-                var expectedImplementationName = repositoryType
-                    .Name
-                    .Substring(1);
-
-                if (!repositoryImplementationTypes.ContainsKey(expectedImplementationName))
-                {
-                    throw new InvalidOperationException($"Could not find implementation for {repositoryType.FullName}.");
-                }
-
-                var implementation = repositoryImplementationTypes[expectedImplementationName];
-
-                if (!repositoryType.IsAssignableFrom(implementation))
-                {
-                    throw new InvalidOperationException($"For repository {repositoryType.Name} found matching type {implementation.Name}, but it does not implement it.");
-                }
-
-                services.AddTransient(repositoryType, implementation);
-            }
+            services.AddScoped<IDynamicLinksService, DynamicLinksService>();
 
             return services;
         }
