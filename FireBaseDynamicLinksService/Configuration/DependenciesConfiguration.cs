@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,15 +23,23 @@ namespace FireBaseDynamicLinksService.Configuration
                 throw new Exception("The service account credentials file does not exist at: " + serviceAccountCredentialFilePath);
             }
 
-            var googleCredential = GoogleCredential
-                .FromFile(serviceAccountCredentialFilePath)
-                .CreateScoped(FirebaseDynamicLinksService.Scope.Firebase);
+            try
+            {
+                var googleCredential = GoogleCredential
+                    .FromFile(serviceAccountCredentialFilePath)
+                    .CreateScoped(FirebaseDynamicLinksService.Scope.Firebase);
 
-            serviceCollection.AddScoped(provider => new FirebaseDynamicLinksService(
-                new BaseClientService.Initializer
-                {
-                    HttpClientInitializer = googleCredential
-                }));
+                serviceCollection.AddScoped(provider => new FirebaseDynamicLinksService(
+                    new BaseClientService.Initializer
+                    {
+                        HttpClientInitializer = googleCredential
+                    }));
+            }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message);
+                throw;
+            }
 
             return serviceCollection;
         }
