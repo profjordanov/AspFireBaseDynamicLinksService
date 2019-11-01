@@ -34,17 +34,16 @@ namespace FireBaseDynamicLinksService.Services.Business
                     IosInfo = new IosInfo(),
                     AnalyticsInfo = new AnalyticsInfo(),
                     DesktopInfo = new DesktopInfo(),
-                    DomainUriPrefix = string.Empty,
-                    DynamicLinkDomain = string.Empty,
+                    DomainUriPrefix = "DomainUriPrefix",
                     ETag = string.Empty,
                     Link = linkAppOpen,
                     NavigationInfo = new NavigationInfo(),
                     SocialMetaTagInfo = new SocialMetaTagInfo()
                 },
-                ETag = string.Empty,
-                LongDynamicLink = string.Empty,
-                SdkVersion = string.Empty,
-                Suffix = new Suffix()
+                Suffix = new Suffix
+                {
+                    Option = "SHORT"
+                }
             };
 
             var jsonRequest = JsonConvert.SerializeObject(
