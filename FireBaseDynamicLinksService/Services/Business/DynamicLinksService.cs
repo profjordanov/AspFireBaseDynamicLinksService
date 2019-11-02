@@ -24,38 +24,61 @@ namespace FireBaseDynamicLinksService.Services.Business
         {
             var linkAppOpen = "https://api-dev.hconnect.heidelbergcement.com/applyrolerequest/" + roleRequestId;
 
-            var request = _fireBaseDynamicLinksService.ShortLinks.Create(new CreateShortDynamicLinkRequest());
 
             var requestModel = new CreateShortDynamicLinkRequest
             {
                 DynamicLinkInfo = new DynamicLinkInfo
                 {
-                    AndroidInfo = new AndroidInfo(),
-                    IosInfo = new IosInfo(),
-                    AnalyticsInfo = new AnalyticsInfo(),
-                    DesktopInfo = new DesktopInfo(),
-                    DomainUriPrefix = "DomainUriPrefix",
-                    ETag = string.Empty,
+                    AndroidInfo = new AndroidInfo
+                    {
+                        AndroidPackageName = "AndroidPackageName",
+                        //ETag = "ETagAndroid"
+                    },
+                    IosInfo = new IosInfo
+                    {
+                        IosAppStoreId = "IosAppStoreId",
+                        IosBundleId = "AndroidPackageName",
+                        //ETag = "ETagIos"
+                    },
+                    AnalyticsInfo = new AnalyticsInfo
+                    {
+                        //ETag = "ETagAnalytics"
+                    },
+                    DesktopInfo = new DesktopInfo
+                    {
+                        //ETag = "ETagDesktop"
+                    },
+                    DomainUriPrefix = "soge.page.link",
                     Link = linkAppOpen,
-                    NavigationInfo = new NavigationInfo(),
-                    SocialMetaTagInfo = new SocialMetaTagInfo()
+                    NavigationInfo = new NavigationInfo
+                    {
+                       // ETag = "ETagNavigation"
+                    },
+                    SocialMetaTagInfo = new SocialMetaTagInfo
+                    {
+                       // ETag = "ETagSocialMeta"
+                    }
                 },
                 Suffix = new Suffix
                 {
-                    Option = "SHORT"
-                }
+                    Option = "SHORT",
+                    //ETag = "ETagSuffix"
+                },
+                //ETag = "ETag"
             };
 
-            var jsonRequest = JsonConvert.SerializeObject(
-                requestModel,
-                Formatting.Indented,
-                new CreateShortDynamicLinkRequestConverter());
+            var request = _fireBaseDynamicLinksService.ShortLinks.Create(requestModel);
 
-            request.ModifyRequest = message =>
-                message.Content = new StringContent(
-                    jsonRequest,
-                    Encoding.UTF8,
-                    "application/json");
+            //var jsonRequest = JsonConvert.SerializeObject(
+            //    requestModel,
+            //    Formatting.Indented,
+            //    new CreateShortDynamicLinkRequestConverter());
+
+            //request.ModifyRequest = message =>
+            //    message.Content = new StringContent(
+            //        jsonRequest,
+            //        Encoding.UTF8,
+            //        "application/json");
             try
             {
                 var shortDynamicLinkResponse = await request.ExecuteAsync();
