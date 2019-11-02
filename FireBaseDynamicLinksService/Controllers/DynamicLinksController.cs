@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using FireBaseDynamicLinksService.Services.Core;
+using Google.Apis.FirebaseDynamicLinks.v1.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FireBaseDynamicLinksService.Controllers
@@ -17,6 +19,8 @@ namespace FireBaseDynamicLinksService.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(CreateShortDynamicLinkResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post()
         {
             var result = await _dynamicLinksService
