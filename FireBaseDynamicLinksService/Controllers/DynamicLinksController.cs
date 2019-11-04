@@ -18,7 +18,7 @@ namespace FireBaseDynamicLinksService.Controllers
             _dynamicLinksService = dynamicLinksService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(typeof(CreateShortDynamicLinkResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post()

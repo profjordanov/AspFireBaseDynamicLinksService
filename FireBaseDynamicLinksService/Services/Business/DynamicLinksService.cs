@@ -4,22 +4,25 @@ using System.Threading.Tasks;
 using FireBaseDynamicLinksService.Services.Core;
 using Google.Apis.FirebaseDynamicLinks.v1;
 using Google.Apis.FirebaseDynamicLinks.v1.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace FireBaseDynamicLinksService.Services.Business
 {
     public class DynamicLinksService : IDynamicLinksService
     {
         private readonly FirebaseDynamicLinksService _fireBaseDynamicLinksService;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public DynamicLinksService(FirebaseDynamicLinksService fireBaseDynamicLinksService)
+        public DynamicLinksService(FirebaseDynamicLinksService fireBaseDynamicLinksService, IHttpContextAccessor contextAccessor)
         {
             _fireBaseDynamicLinksService = fireBaseDynamicLinksService;
+            _contextAccessor = contextAccessor;
         }
 
         public async Task<CreateShortDynamicLinkResponse> CreateRoleRequestFireBaseDynamicLinkAsync(
             string roleRequestId)
         {
-            var linkAppOpen = "https://www.heidelbergcement.com/applyrolerequest/" + roleRequestId;
+            var linkAppOpen = GenerateRoleRequestLink(roleRequestId);
 
             var requestModel = new CreateShortDynamicLinkRequest
             {
@@ -69,6 +72,23 @@ namespace FireBaseDynamicLinksService.Services.Business
                 Debug.Fail(e.Message);
                 return default(CreateShortDynamicLinkResponse);
             }
+        }
+
+        private string GenerateRoleRequestLink(string roleRequestId)
+        {
+            var request = _contextAccessor.HttpContext.Request;
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = request.Scheme,
+                Host = request.Host.Host,
+                Path = "roleRequests/applyPermissions/" + roleRequestId
+            };
+
+            var x = uriBuilder.Uri.AbsoluteUri;
+            var y = uriBuilder.Uri.AbsolutePath;
+            var yz = uriBuilder.Uri.LocalPath;
+
+            return uriBuilder.Uri.AbsoluteUri;
         }
     }
 }
