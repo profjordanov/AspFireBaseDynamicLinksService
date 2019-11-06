@@ -19,10 +19,10 @@ namespace FireBaseDynamicLinksService.Services.Business
             _contextAccessor = contextAccessor;
         }
 
-        public async Task<CreateShortDynamicLinkResponse> CreateRoleRequestFireBaseDynamicLinkAsync(
-            string roleRequestId)
+        public async Task<CreateShortDynamicLinkResponse> CreateFirebaseDynamicLinkByIdAsync(
+            string id)
         {
-            var linkAppOpen = GenerateRoleRequestLink(roleRequestId);
+            var linkAppOpen = GenerateLinkAppOpens(id);
 
             var requestModel = new CreateShortDynamicLinkRequest
             {
@@ -74,19 +74,19 @@ namespace FireBaseDynamicLinksService.Services.Business
             }
         }
 
-        private string GenerateRoleRequestLink(string roleRequestId)
+        private string GenerateLinkAppOpens(string id)
         {
             var request = _contextAccessor.HttpContext.Request;
             var uriBuilder = new UriBuilder
             {
                 Scheme = request.Scheme,
                 Host = request.Host.Host,
-                Path = "roleRequests/applyPermissions/" + roleRequestId
+                Path = "requests/" + id
             };
 
-            var x = uriBuilder.Uri.AbsoluteUri;
-            var y = uriBuilder.Uri.AbsolutePath;
-            var yz = uriBuilder.Uri.LocalPath;
+            var absoluteUri = uriBuilder.Uri.AbsoluteUri;
+            var absolutePath = uriBuilder.Uri.AbsolutePath;
+            var localPath = uriBuilder.Uri.LocalPath;
 
             return uriBuilder.Uri.AbsoluteUri;
         }

@@ -24,7 +24,7 @@ namespace FireBaseDynamicLinksService.Controllers
         public async Task<IActionResult> Post()
         {
             var result = await _dynamicLinksService
-                .CreateRoleRequestFireBaseDynamicLinkAsync(
+                .CreateFirebaseDynamicLinkByIdAsync(
                     Guid.NewGuid().ToString());
 
             if (result == null)

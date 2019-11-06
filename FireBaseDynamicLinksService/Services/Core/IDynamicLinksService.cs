@@ -5,6 +5,6 @@ namespace FireBaseDynamicLinksService.Services.Core
 {
     public interface IDynamicLinksService
     {
-        Task<CreateShortDynamicLinkResponse> CreateRoleRequestFireBaseDynamicLinkAsync(string roleRequestId);
+        Task<CreateShortDynamicLinkResponse> CreateFirebaseDynamicLinkByIdAsync(string roleRequestId);
     }
 }
